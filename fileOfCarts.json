@@ -1,0 +1,28 @@
+[
+	{
+		"id": "1237c6da-8384-45b9-9cd7-525c33bef191",
+		"productsCart": [
+			{
+				"id": "41d10858-f377-4a20-b098-b9e6d68d672f",
+				"quantity": 3
+			}
+		]
+	},
+	{
+		"id": "fdf461a8-282b-4d05-ba94-357643272a80",
+		"productsCart": []
+	},
+	{
+		"id": "88599130-792d-472b-b3e2-f537b275104f",
+		"productsCart": [
+			{
+				"id": "41d10858-f377-4a20-b098-b9e6d68d672f",
+				"quantity": 1
+			}
+		]
+	},
+	{
+		"id": "631a7be2-f69d-447c-a7af-7ae413546d4f",
+		"productsCart": []
+	}
+]

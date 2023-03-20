@@ -1,0 +1,57 @@
+[
+	{
+		"title": "Martillo",
+		"description": "descripcion del martillo",
+		"code": "code125",
+		"price": 1000,
+		"status": true,
+		"stock": 200,
+		"category": "categoría de Martillo",
+		"thumbnail": [],
+		"id": "41d10858-f377-4a20-b098-b9e6d68d672f"
+	},
+	{
+		"title": "Destornillador",
+		"description": "descripcion del destornillador",
+		"code": "code126",
+		"price": 1000,
+		"status": true,
+		"stock": 200,
+		"category": "categoría del Destornillador",
+		"thumbnail": [],
+		"id": "3960b4c3-44d4-4eb0-aca4-ba9f8ed1dbe7"
+	},
+	{
+		"title": "Taladro",
+		"description": "descripcion del Taladro",
+		"code": "code127",
+		"price": 1000,
+		"status": true,
+		"stock": 200,
+		"category": "categoría del Taladro",
+		"thumbnail": [],
+		"id": "dde70d76-ae65-4c3c-b4f1-955393d16555"
+	},
+	{
+		"title": "New Title",
+		"description": "New description",
+		"code": "code1277",
+		"price": 1000,
+		"status": true,
+		"stock": 200,
+		"category": "categoría de Martillo",
+		"thumbnail": [],
+		"id": "1fd0a827-8b7f-49d1-897d-82cd35094baa"
+	},
+	{
+		"title": "MartilloNuevo",
+		"description": "descripcion del martillo",
+		"code": "code1297",
+		"price": 1000,
+		"status": true,
+		"stock": 200,
+		"category": "categoría de Martillo",
+		"thumbnail": [],
+		"id": "14916658-1914-48a4-96e5-974fa10c6f57"
+	}
+]
