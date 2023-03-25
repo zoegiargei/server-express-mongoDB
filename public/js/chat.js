@@ -1,18 +1,20 @@
 
 const socketSideClient = io();
 
+/** @type {HTMLInputElement | null} */
 const inputName = document.getElementById('inputName');
+/** @type {HTMLInputElement | null} */
 const inputMess = document.getElementById('inputMessage');
 
-
-inputName?.addEventListener('keyup', (e) => {
+inputName.addEventListener('keyup', (e) => {
     if(e.key === 'Enter'){
-        if(inputName.value.trim().length > 0){
+        if(inputName.value.trim().length > 0) {
             socketSideClient.emit('newMessage', { name: inputName.value, message: inputMess?.value })
             inputName.value = ''
         }
     }
-}); 
+});
+
 
 Swal.fire({
     title: "Identifícate",
@@ -24,50 +26,69 @@ Swal.fire({
 }).then(result => {
     inputName.value = result.value;
     socketSideClient.emit('newUser', result.value)
-})
+});
 
-const formChat = document.getElementById('formChat')
-const btnSubmit = document.getElementById('btnSubmit')
 
-btnSubmit.addEventListener('click', (e) => {
+document.getElementById('NewMessButton').addEventListener('click', (e) => {
 
-    if (inputName instanceof HTMLInputElement &&
-        inputMess instanceof HTMLInputElement &&
-        inputName.value && inputMess.value) {
-    
-        const mess = {
+    if(inputName instanceof HTMLInputElement && inputMess instanceof HTMLInputElement && inputName.value && inputMess.value){
+            
+        const newMess = {
             name: inputName.value,
-            menssage: inputMess.value,
+            mess: inputMess.value
         }
-    
-        socketSideClient.emit('newMessage', mess)
+
+        socketSideClient.emit('newMessage', newMess)
     }
-})
+    
+});
 
 
-const messagesTemplate = `
+socketSideClient.on('messages', allMessages => {
+    const messagesDiv = document.getElementById('messagesDiv')
+
+    messagesDiv.innerHTML = ``
+    allMessages.forEach((elem, index)  => {
+        messagesDiv.innerHTML +=`
+            <div class="p-1 mb-2">
+
+                <ul class="list-group" id="${index}">
+
+                    <li class="list-group-item list-group-item-action" aria-current="true" ><h5>Product: ${ elem.name }</h5></li>
+                    <li class="list-group-item list-group-item-action" >Description: ${ elem.mess }</li>
+                </ul>
+            </div>
+        `
+    })
+});
+
+
+/* const messagesTemplate = `
 {{#if thIsMessages}}
     <ul>
         {{#each messages}}
-        <li>{{this.name}}: {{this.menssage}}</li>
+        <li>{{this.name}}: {{this.mess}}</li>
         {{/each}}
     </ul>
 {{else}}
     There isn't messages
 {{/if}}`
 
+
 const makeTemplateMessages = Handlebars.compile(messagesTemplate);
 
-socketSideClient.on('messages', mess => {
+
+socketSideClient.on('messages', messages => {
 
     const messagesDiv = document.getElementById('messagesDiv')
     if(messagesDiv){
         messagesDiv.innerHTML = makeTemplateMessages({
             thIsMessages: mess.length > 0,
-            mess
+            messages
         })
     }
-})
+}); */
+
 
 socketSideClient.on('newUser', (name) => {
     Swal.fire({
@@ -78,6 +99,7 @@ socketSideClient.on('newUser', (name) => {
         title: `${name} se ha unido al chat`,
         icon: "success"
     })
-})
+});
 
-socketSideClient.emit('refreshMessages')
+
+socketSideClient.emit('refreshMessages');

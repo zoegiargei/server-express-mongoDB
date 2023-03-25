@@ -8,19 +8,23 @@ class ManagerDb{
     }
 
     async findElements(){
-        return await this.db.find()
+        return await this.db.find().lean()
     }
 
     async findElementById(id){
-        return await this.db.findOne({ id })
+        return await this.db.findOne({ _id: id }).lean()
     }
 
-    async modifyElement(id, newValues){
-        return await this.db.replaceOne({ id }, newValues, {runValidators: true})
+    async replaceElement(id, newValues){
+        return await this.db.replaceOne({ _id: id }, newValues )
+    }
+
+    async updateElement(id, newValues){
+        return await this.db.updateOne({ _id: id }, newValues )
     }
 
     async deleteElement(id){
-        return await this.db.deleteOne({ id })
+        return await this.db.deleteOne({ _id: id })
     }
 
     async reset(){

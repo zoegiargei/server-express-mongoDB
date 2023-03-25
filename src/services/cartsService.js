@@ -3,43 +3,27 @@ import { CartDbManager } from "../dao/managersDB/CartDbManager.js";
 class CartsService{
 
     async createCart(newCart){
-        await CartDbManager.saveElement(newCart)
-        return newCart
-    }
+        return await CartDbManager.saveElement(newCart)
+    };
 
     async getCartById(cid){
-        console.log(await CartDbManager.findElementById(cid))
+
         return await CartDbManager.findElementById(cid)
-    }
+    };
 
     async addToCart(cid, pid){
 
-
-        const cartsInDb = await CartDbManager.findElements()
-
         const cartInDb = await CartDbManager.findElementById(cid)
-        console.log(cartInDb)
-            
-        cartsInDb.forEach( cart =>  {
 
-            if(cart.id === cid){
+        if(cartInDb.productsCart.find(prod => prod.id === pid)){
+            const indexProd = cartInDb.productsCart.findIndex(prod => prod.id === pid)
+            cartInDb.productsCart[indexProd].quantity = cartInDb.productsCart[indexProd].quantity + 1 
+        } else{
+            cartInDb.productsCart.push({id: pid, quantity: 1})
+        }
 
-                if(cart.productsCart.find(prod => prod.id === pid)){
-                    
-                    const index = cart.productsCart.findIndex(prod => prod.id === pid)
-                    const aux = [...cart.productsCart]
-                    aux[index].quantity = aux[index].quantity + 1
-                    cart.productsCart = aux
-
-                }else{
-                    
-                    cart.productsCart.push({ id: pid, quantity: 1 })
-                }
-            }
-        })
-
-        await CartDbManager.modifyElement(cid, cartsInDb)
+        await CartDbManager.replaceElement(cid, cartInDb)
     };
-}
+};
 
 export default CartsService;

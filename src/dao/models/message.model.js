@@ -1,11 +1,11 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 
 const messCollection = 'messages';
 
 const messSchema = new mongoose.Schema({
 
-    idMessage: Schema.Types.ObjectId,
-    message: { type:Object }
+    name: {type:String, require:true},
+    mess : {type:String, require:true}
 
 }, { versionKey: false } );
 

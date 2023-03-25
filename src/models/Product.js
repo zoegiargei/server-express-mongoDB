@@ -8,7 +8,7 @@ class Product{
         }
 
         function validateCode(code){
-            if(!code || !Number.isInteger(Number(code))){ throw new Error(`Invalidate value ${code}`) }
+            if(!code || !Number.isInteger(code)){ throw new Error(`Invalidate value ${code}`) }
             return code
         }
 
@@ -42,7 +42,7 @@ class Product{
         this.code = validateCode(code),
         this.price = validateStringNum(price),
         this.status = validateBoolean(status),
-        this.stock = validateStringNum(stock),
+        this.stock = validateCode(stock),
         this.category = validateString(category),
         this.thumbnail = validateArray(thumbnail),
         this.id = uuid() //Ver como hacer para que no se actualize id cuando hacemos put

@@ -13,7 +13,7 @@ import timeNow from './controllers/middlewares/timeNow.js';
 import addToReq from './controllers/middlewares/addToReq.js'
 import mistake from './controllers/errors/mistake.js';
 
-import { configNewUser } from './sockets.js/messageSocket.js';
+import { configMessagesSocket } from './sockets/messageSocket.js';
 
 //
 export const productsManager = new Manager("./fileOfProducts.json");
@@ -26,7 +26,7 @@ const app = express();
 //
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('./public'));
+app.use(express.static('public'));
 app.use(timeNow)
 app.use(addToReq)
 app.use(mistake)
@@ -74,5 +74,5 @@ io.on('connection', async socketSideServer => {
         productsManager.addElement(data)
     })
 
-    configNewUser(io, socketSideServer)
+    configMessagesSocket(io, socketSideServer)
 })
