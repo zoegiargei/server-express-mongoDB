@@ -33,15 +33,14 @@ class CartsService{
 
         if(cartInDb.productsCart.find(prod => prod.id === pid)){
 
-            const indexProd = cartInDb.productsCart.findIndex(prod => prod.id === pid)
-            cartInDb.slice(indexProd, 1)
-            
+            const newCartInDb = cartInDb.productsCart.filter(prod => prod.id != pid)
+            await CartDbManager.replaceElement(cid, newCartInDb)
+
         } else{
 
             throw new Error("Product in cart not found")
         }
 
-        await CartDbManager.replaceElement(cid, cartInDb)
     };
 };
 

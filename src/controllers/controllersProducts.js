@@ -1,6 +1,4 @@
-import { productsManager } from "../main.js";
 import { ProductDbManager } from "../dao/managersDB/ProductDbManager.js";
-import Product from "../models/Product.js";
 import ProductsService from "../services/productsService.js";
 
 export const productsService = new ProductsService();
