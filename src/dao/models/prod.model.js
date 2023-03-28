@@ -11,7 +11,7 @@ const prodSchema = new mongoose.Schema({
     price: { type:String, required:true }, 
     status: { type:Boolean, default:true},
     stock: { type:Number, required:true },
-    category: { type:String, required:true },
+    category: { type:String, index:true, required:true },
     thumbnail: {
         type: [{ type:Object, required:true, cast:false }]
         /*         validate: {

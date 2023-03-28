@@ -46,7 +46,7 @@ class ProductsService{
     }
 
     async productsByPaginate(limitValue, pageValue){
-        const products = await prodModel.paginate({}, {limit: limitValue, page: pageValue})
+        const products = await prodModel.paginate({}, { limit: limitValue, page: pageValue, lean:true })
         return products
     }
 };

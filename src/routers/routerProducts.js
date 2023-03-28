@@ -1,9 +1,5 @@
 import { Router } from 'express';
-import { contrGetProd } from '../controllers/controllersProducts.js';
-import { contrGetProducts } from '../controllers/controllersProducts.js';
-import { contrPostProd } from '../controllers/controllersProducts.js';
-import { contrPutProd } from '../controllers/controllersProducts.js';
-import { contrDelProd } from '../controllers/controllersProducts.js';
+import { contrGetProd, contrGetProducts, contrPostProd, contrPutProd, contrDelProd } from '../controllers/controllersProducts.js';
 
 //Multer --> librería para subir archivos desde un formulario(cliente)
 import multer from 'multer';

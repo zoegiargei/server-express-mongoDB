@@ -27,10 +27,24 @@ export const contrGetProducts = async (req, res) => {
         const valueStock = req.query.stock
         const sort = req.query.sort
         const queryCli = req.query.queryCli
+        const cat = req.query.category
 
         const allProducts = (await productsService.getProducts()).slice(0, limit)
 
-        if (valueStock) {
+
+        if (cat) {
+            
+            try {
+
+                const cat = req.params.cat
+                const productsByCat = await ProductDbManager.findElementsByQuery({category: String(cat)})
+                return res.json({ productsByCat })
+
+            } catch (error) {
+                res.status(400).send({ msg: "There is not product with that category" })
+            }
+
+        } else if (valueStock) {
 
             try {
 

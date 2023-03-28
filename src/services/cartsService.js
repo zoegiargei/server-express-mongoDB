@@ -27,19 +27,23 @@ class CartsService{
         return await CartDbManager.findElementById(cid)
     };
 
+    async getCartByIdPopulated(cid){
+        const cart = await CartDbManager.findElementById(cid)
+        return await cart.populate('productsCart.product')
+    };
 
     async addToCart(cid, pid){
 
         const cartInDb = await CartDbManager.findElementById(cid)
         if(!cartInDb){ throw new Error("Cart not existing") }
 
-        if(cartInDb.productsCart.find(prod => prod.id === pid)){
+        if(cartInDb.productsCart.find(prod => prod._id === pid)){
 
-            const indexProd = cartInDb.productsCart.findIndex(prod => prod.id === pid)
+            const indexProd = cartInDb.productsCart.findIndex(prod => prod._id === pid)
             cartInDb.productsCart[indexProd].quantity = cartInDb.productsCart[indexProd].quantity + 1 
 
         } else{
-            cartInDb.productsCart.push({id: pid, quantity: 1})
+            cartInDb.productsCart.push({ product: pid, quantity: 1 })
         }
 
         await CartDbManager.replaceElement(cid, cartInDb)
