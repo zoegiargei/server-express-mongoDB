@@ -48,7 +48,7 @@ mongoose.connect(MONGO_CNX_STR);
 
 //
 app.use('/api/products', routerProducts);
-app.use('/api', routerCarts);
+app.use('/api/carts', routerCarts);
 app.use('/web', routerWeb);
 // app.use('/', routerApi)
 

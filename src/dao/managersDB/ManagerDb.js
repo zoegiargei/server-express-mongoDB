@@ -11,6 +11,15 @@ class ManagerDb{
         return await this.db.find().lean()
     }
 
+    async findElementsByQuery(queryCli){
+        
+        if(!queryCli){
+            return await this.db.find().lean()
+        } else {
+            return await this.db.find(queryCli).lean()
+        }
+    }
+
     async findElementById(id){
         return await this.db.findOne({ _id: id }).lean()
     }
@@ -21,6 +30,10 @@ class ManagerDb{
 
     async updateElement(id, newValues){
         return await this.db.updateOne({ _id: id }, newValues )
+    }
+
+    async sortElements(value){
+        return await this.db.find().sort( value )
     }
 
     async deleteElement(id){

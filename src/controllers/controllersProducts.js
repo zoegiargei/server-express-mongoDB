@@ -24,23 +24,53 @@ export const contrGetProducts = async (req, res) => {
 
     try {
 
-        const limit = req.query.limit
-        const stock = parseInt(req.query.stock)
+        const limit = req.query.limit || 10
+        const valueStock = req.query.stock
+        const page = req.query.page || 1
+        const sort = req.query.sort
+        const queryCli = req.query.queryCli
 
-        const allProducts = await productsService.getProducts()
-    
-        if (limit) {
-            const productsSlice = allProducts.slice(0, limit)
-            return res.json({ productsSlice })
+        const allProducts = (await productsService.getProducts()).slice(0, limit)
+
+        if (valueStock) {
+
+            try {
+
+                const prodsByStock = await productsService.getProductsByQuery({stock: {$eq: 200}})
+                return res.json({ prodsByStock })
+                
+            } catch (error) {
+                res.status(400).send({ msg: "There is not product with that stock" })
+            }
+
+        } else if (page) {
+
+            try {
+
+                const productsByPage = await productsService.productsByPaginate(limit, page)
+                return res.json({ productsByPage })
+
+            } catch (error) {
+                res.status(400).send({ msg: "There is not that number page" })
+            }
+
+        } else if (sort) {
+
+            const sortedProducts = await productsService.sortAndShowElements(sort)
+            return res.json({ sortedProducts })
+
+        } else if (queryCli) {
+            
+            try {
+            
+                const prodByQuery = await productsService.findElements({ queryCli })
+                return res.json({ prodByQuery })
+
+            } catch (error) {
+                res.status(400).send({ msg: "Sent a invalidate query" })
+            }
         }
-    
-        if (stock) {
-            //pending
-            const productsByStock = await productsManager.getElements({ field: 'stock', value: stock })
-            //const prodByStock = await productsService.getProducts()
-            return res.json({ productsByStock })
-        }
-    
+
         return res.json({ allProducts })
 
     } catch (error) {

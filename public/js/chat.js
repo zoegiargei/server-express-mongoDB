@@ -63,33 +63,6 @@ socketSideClient.on('messages', allMessages => {
 });
 
 
-/* const messagesTemplate = `
-{{#if thIsMessages}}
-    <ul>
-        {{#each messages}}
-        <li>{{this.name}}: {{this.mess}}</li>
-        {{/each}}
-    </ul>
-{{else}}
-    There isn't messages
-{{/if}}`
-
-
-const makeTemplateMessages = Handlebars.compile(messagesTemplate);
-
-
-socketSideClient.on('messages', messages => {
-
-    const messagesDiv = document.getElementById('messagesDiv')
-    if(messagesDiv){
-        messagesDiv.innerHTML = makeTemplateMessages({
-            thIsMessages: mess.length > 0,
-            messages
-        })
-    }
-}); */
-
-
 socketSideClient.on('newUser', (name) => {
     Swal.fire({
         toast: true,

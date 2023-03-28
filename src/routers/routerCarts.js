@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { contrPostCart } from '../controllers/controllersCarts.js';
+import { contrDelProdInCart, contrPostCart } from '../controllers/controllersCarts.js';
 import { contrGetCart } from '../controllers/controllersCarts.js';
 import { contrProdInCart } from '../controllers/controllersCarts.js';
 
@@ -12,3 +12,5 @@ routerCarts.post('/', contrPostCart)
 routerCarts.get('/:cid', contrGetCart)
 
 routerCarts.post('/:cid/products/:pid', contrProdInCart)
+
+routerCarts.delete('/:cid/products/:pid', contrDelProdInCart)
