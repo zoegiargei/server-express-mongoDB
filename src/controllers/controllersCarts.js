@@ -43,8 +43,6 @@ export const contrProdInCart = async (req, res) => {
         const pid = req.params.pid
     
         const productById = await productsService.getProductById(pid)
-        console.log(productById)
-
 
         if(!productById){
             res.status(400).send({status:"error", error:"Product not existing"})
@@ -61,19 +59,33 @@ export const contrProdInCart = async (req, res) => {
     }
 };
 
+
+export const contrPutProdInCart = async (req, res) => {
+    try {
+
+        const cid = req.params.cid
+        const pid = req.params.pid
+        const newQuantity = req.body
+
+        if(!newQuantity || !(Number.isInteger(newQuantity)) || Number(newQuantity) < 0 ){
+            res.status(400).send({status:"error", error:"Invalidate quantity value"})
+        }
+        
+        await cartsService.updateProdInCart(cid, pid, newQuantity)
+        
+        res.send({ status:"success", message:"Product in Cart updated" })
+        
+    } catch (error) {
+        res.status(400).send({ status:"error", error:"Not possible update product in cart" })
+    }
+};
+
+
 export const contrDelProdInCart = async (req, res) => {
     try {
 
         const cid = req.params.cid
         const pid = req.params.pid
-    
-        const productById = await productsService.getProductById(pid)
-        console.log(productById)
-
-
-        if(!productById){
-            res.status(400).send({status:"error", error:"Product not existing"})
-        }
         
         await cartsService.delProdInCart(cid, pid)
         
@@ -82,4 +94,32 @@ export const contrDelProdInCart = async (req, res) => {
     } catch (error) {
         res.status(400).send({ status:"error", error:"Not possible delete product in cart" })
     }
-}
+};
+
+
+export const contrPutCart = async (req, res) => {
+    try {
+
+        const cid = req.params.cid
+        const data = req.body
+
+        await cartsService.loadProductInCart(cid, data)
+
+        res.send({ status:"success", message:"Updated cart" })
+
+    } catch (error) {
+        res.status(400).send({ msg: "Cart not existing" })   
+    }
+};
+
+
+export const contrDelAllProds = async (req, res) => {
+    try {
+        
+        const cid = req.params.cid
+        await cartsService.deleteAllProducts(cid)
+
+    } catch (error) {
+        res.status(400).send({ status:"error", error:"Not possible delete products in cart" })
+    }
+};

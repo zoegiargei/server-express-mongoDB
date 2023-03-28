@@ -18,7 +18,11 @@ class ProductsService{
     }
 
     async getProductById(pid){
-        return await ProductDbManager.findElementById(pid)
+        try {
+            return await ProductDbManager.findElementById(pid)
+        } catch (error) {
+            throw new Error("Product not existing")
+        }
     }
 
     async updateProduct(pid, data){
@@ -42,7 +46,7 @@ class ProductsService{
     }
 
     async productsByPaginate(limitValue, pageValue){
-        const products = await prodModel.paginate({},{limit: limitValue, page: pageValue})
+        const products = await prodModel.paginate({}, {limit: limitValue, page: pageValue})
         return products
     }
 };

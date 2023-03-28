@@ -23,8 +23,8 @@ export const contrGetProducts = async (req, res) => {
     try {
 
         const limit = req.query.limit || 10
-        const valueStock = req.query.stock
         const page = req.query.page || 1
+        const valueStock = req.query.stock
         const sort = req.query.sort
         const queryCli = req.query.queryCli
 
@@ -46,10 +46,14 @@ export const contrGetProducts = async (req, res) => {
             try {
 
                 const productsByPage = await productsService.productsByPaginate(limit, page)
-                return res.json({ productsByPage })
+
+                const prevLink = productsByPage.hasPrevPage ? `api/products/limit=${limit}&?page=${Number(page)-1}` : null
+                const nextLink = productsByPage.hasPrevPage ? `api/products/limit=${limit}&?page=${Number(page)+1}` : null
+
+                return res.status(200).json({productsByPage, prevLink, nextLink })
 
             } catch (error) {
-                res.status(400).send({ msg: "There is not that number page" })
+                res.status(400).send({ msg: "Cannot show products by paginate" })
             }
 
         } else if (sort) {
@@ -59,13 +63,15 @@ export const contrGetProducts = async (req, res) => {
 
         } else if (queryCli) {
             
+            if(typeof(queryCli) != 'object'){ throw new Error("Sent an invalidate query value") }
+
             try {
-            
-                const prodByQuery = await productsService.findElements({ queryCli })
+
+                const prodByQuery = await productsService.getProductsByQuery(queryCli)
                 return res.json({ prodByQuery })
 
             } catch (error) {
-                res.status(400).send({ msg: "Sent a invalidate query" })
+                res.status(400).send({ msg: "Sent an invalidate query" })
             }
         }
 
@@ -81,7 +87,7 @@ export const contrPostProd = async (req, res) => {
 
     try {
 
-        const data = req.body;
+        const data = req.body
         const savedProduct = await productsService.loadProduct(data)
 
         const allProducts = await ProductDbManager.findElements()

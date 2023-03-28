@@ -8,7 +8,7 @@ class Product{
         }
 
         function validateCode(code){
-            if(!code || !Number.isInteger(code)){ throw new Error(`Invalidate value ${code}`) }
+            if(!code || !(Number.isInteger(code))){ throw new Error(`Invalidate value ${code}`) }
             return code
         }
 

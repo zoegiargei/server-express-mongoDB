@@ -5,6 +5,10 @@ const routerWeb = Router();
 
 routerWeb.get('/', contrShowAllproducts)
 
+routerWeb.get('/products', async (req, res) => {
+    res.render('products')
+})
+
 routerWeb.get('/realtimeproducts', async (req, res) => { res.render('realTimeProducts') })
 
 routerWeb.get('/addProducts', async (req, res) => { res.render('addProducts') })
