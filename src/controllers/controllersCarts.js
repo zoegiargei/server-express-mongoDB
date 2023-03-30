@@ -118,6 +118,7 @@ export const contrDelAllProds = async (req, res) => {
         
         const cid = req.params.cid
         await cartsService.deleteAllProducts(cid)
+        res.send({ status:"success", message:"Deleted cart" })
 
     } catch (error) {
         res.status(400).send({ status:"error", error:"Not possible delete products in cart" })

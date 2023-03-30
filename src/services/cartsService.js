@@ -1,6 +1,4 @@
-import { productsService } from "../controllers/controllersProducts.js";
 import { CartDbManager } from "../dao/managersDB/CartDbManager.js";
-import Cart from "../models/Cart.js";
 
 class CartsService{
 
@@ -27,22 +25,28 @@ class CartsService{
         return await CartDbManager.findElementById(cid)
     };
 
+
     async getCartByIdPopulated(cid){
-        const cart = await CartDbManager.findElementById(cid)
-        return await cart.populate('productsCart.product')
+        return await CartDbManager.findElementById(cid)
     };
+
 
     async addToCart(cid, pid){
 
         const cartInDb = await CartDbManager.findElementById(cid)
         if(!cartInDb){ throw new Error("Cart not existing") }
+        
+        if(cartInDb.productsCart.find(prod => String(prod.product._id) === pid)){
 
-        if(cartInDb.productsCart.find(prod => prod._id === pid)){
+            cartInDb.productsCart.forEach(obj => {
 
-            const indexProd = cartInDb.productsCart.findIndex(prod => prod._id === pid)
-            cartInDb.productsCart[indexProd].quantity = cartInDb.productsCart[indexProd].quantity + 1 
+                if(String(obj.product._id) === pid){
+                    obj.quantity += 1
+                }
+            })
 
-        } else{
+        } else {
+
             cartInDb.productsCart.push({ product: pid, quantity: 1 })
         }
 
@@ -55,10 +59,15 @@ class CartsService{
         const cartInDb = await CartDbManager.findElementById(cid)
         if(!cartInDb){ throw new Error("Cart not existing") }
 
-        if(cartInDb.productsCart.find(prod => prod.id === pid)){
+        if(cartInDb.productsCart.find(prod => String(prod.product._id) === pid)){
 
-            const indexProd = cartInDb.productsCart.findIndex(prod => prod.id === pid)
-            cartInDb.productsCart[indexProd].quantity = newQuantity
+            cartInDb.productsCart.forEach(obj => {
+
+                if(String(obj.product._id) === pid){
+                    obj.quantity = newQuantity
+                }
+            })
+
             await CartDbManager.replaceElement(cid, cartInDb)
 
         } else{
@@ -72,9 +81,9 @@ class CartsService{
         const cartInDb = await CartDbManager.findElementById(cid)
         if(!cartInDb){ throw new Error("Cart not existing") }
 
-        if(cartInDb.productsCart.find(prod => prod.id === pid)){
+        if(cartInDb.productsCart.find(prod => String(prod.product._id) === pid)){
 
-            const newCartInDb = cartInDb.productsCart.filter(prod => prod.id != pid)
+            const newCartInDb = cartInDb.productsCart.filter(prod => String(prod.product._id) != pid)
             await CartDbManager.replaceElement(cid, newCartInDb)
 
         } else{
@@ -90,7 +99,7 @@ class CartsService{
         if(!cartInDb){ throw new Error("Cart not existing") }
 
         cartInDb.productsCart = []
-        await CartDbManager.replaceElement(cid, cartInDb)
+        return await CartDbManager.replaceElement(cid, cartInDb)
     };
 
 };

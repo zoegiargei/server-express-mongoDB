@@ -36,8 +36,8 @@ export const contrGetProducts = async (req, res) => {
             
             try {
 
-                const cat = req.params.cat
-                const productsByCat = await ProductDbManager.findElementsByQuery({category: String(cat)})
+                const categoryCli = String(cat)
+                const productsByCat = await productsService.getProductsByQuery({ category: categoryCli })
                 return res.json({ productsByCat })
 
             } catch (error) {
