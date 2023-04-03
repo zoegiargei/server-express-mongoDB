@@ -15,7 +15,6 @@ export const contrShowProdByPaginate = async (req, res) => {
     const allProducts = await productsService.productsByPaginate(1, page)
 
     const thIsProducts = allProducts['docs'].length > 0
-    console.log(thIsProducts)
     const prevLink = allProducts.hasPrevPage ? Number(page)-1 : null
     const nextLink = allProducts.hasPrevPage ? Number(page)+1 : null
 

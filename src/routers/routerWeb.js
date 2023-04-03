@@ -14,4 +14,5 @@ routerWeb.get('/addProducts', async (req, res) => { res.render('addProducts') })
 routerWeb.get('/chat', async (req, res) => {res.render('chat')})
 
 routerWeb.get('/', (req, res) => { res.redirect('/chat') })
+
 export default routerWeb;
