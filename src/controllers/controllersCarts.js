@@ -54,8 +54,7 @@ export const contrProdInCart = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error)
-        res.status(400).send({ status:"error", error:"Not possible add Product to Cart" })
+        res.status(400).send({ message: error.message })
     }
 };
 
@@ -76,7 +75,7 @@ export const contrPutProdInCart = async (req, res) => {
         res.send({ status:"success", message:"Product in Cart updated" })
         
     } catch (error) {
-        res.status(400).send({ status:"error", error:"Not possible update product in cart" })
+        res.status(400).send({ message: error.message })
     }
 };
 
@@ -92,7 +91,7 @@ export const contrDelProdInCart = async (req, res) => {
         res.send({ status:"success", message:"Deleted product" })
 
     } catch (error) {
-        res.status(400).send({ status:"error", error:"Not possible delete product in cart" })
+        res.status(400).send({ message: error.message })
     }
 };
 
@@ -108,7 +107,7 @@ export const contrPutCart = async (req, res) => {
         res.send({ status:"success", message:"Updated cart" })
 
     } catch (error) {
-        res.status(400).send({ msg: "Cart not existing" })   
+        res.status(400).send({ message: error.message })
     }
 };
 
@@ -121,6 +120,6 @@ export const contrDelAllProds = async (req, res) => {
         res.send({ status:"success", message:"Deleted cart" })
 
     } catch (error) {
-        res.status(400).send({ status:"error", error:"Not possible delete products in cart" })
+        res.status(400).send({ message: error.message })
     }
 };

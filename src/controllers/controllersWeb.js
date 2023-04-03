@@ -18,5 +18,8 @@ export const contrShowProdByPaginate = async (req, res) => {
     const prevLink = allProducts.hasPrevPage ? Number(page)-1 : null
     const nextLink = allProducts.hasPrevPage ? Number(page)+1 : null
 
-    res.render('products', { title: 'Products By Paginate', thIsProducts: thIsProducts, products: allProducts['docs'], prevLink: prevLink, nextLink: nextLink })
+    console.log(prevLink)
+    console.log(nextLink)
+
+    res.render('products', { title: 'Products By Paginate', thIsProducts: thIsProducts, products: allProducts['docs'], prevLink: prevLink? prevLink : 'No hay pagina previa', nextLink: nextLink? nextLink : 'No hay pagina siguiente' })
 }

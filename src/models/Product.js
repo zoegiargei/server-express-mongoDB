@@ -1,4 +1,3 @@
-import uuid from "uuid";
 class Product{
     constructor({ title, description, code, price, status=true, stock, category, thumbnail }){ //status harcodeado
 
@@ -8,12 +7,14 @@ class Product{
         }
 
         function validateCode(code){
-            if(!code || !(Number.isInteger(code))){ throw new Error(`Invalidate value ${code}`) }
+            if(!code || typeof(code) != 'number' || !(Number.isInteger(code))){ throw new Error(`Invalidate value ${code}`) }
             return code
         }
 
         function validateStringNum(value){
-            if(!value || isNaN(value) || !Number.isInteger(value) || Number(value) < 0){ throw new Error(`Invalidate value ${value}`) }
+            if(!value || !(Number.isInteger(value))  < 0){
+                throw new Error(`Invalidate value`) 
+            }
             return value
         }
 
@@ -44,8 +45,7 @@ class Product{
         this.status = validateBoolean(status),
         this.stock = validateCode(stock),
         this.category = validateString(category),
-        this.thumbnail = validateArray(thumbnail),
-        this.id = uuid() //Ver como hacer para que no se actualize id cuando hacemos put
+        this.thumbnail = validateArray(thumbnail)
     }
 };
 

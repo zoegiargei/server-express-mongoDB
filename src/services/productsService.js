@@ -5,7 +5,18 @@ import Product from "../models/Product.js";
 class ProductsService{
 
     async loadProduct(prod){
-        const newProd = new Product(prod);
+
+
+        const codeProd = await ProductDbManager.findElementByProjection({code: prod.code}, {code: 1})
+        console.log(codeProd)
+
+        codeProd.forEach(elem => {
+            if(elem.code === prod.code){
+                throw new Error("This CODE already exists")
+            }
+        })
+
+        const newProd = new Product(prod)
         return await ProductDbManager.saveElement(newProd)
     }
 

@@ -13,7 +13,7 @@ export const contrGetProd = async (req, res) => {
         res.json({ product })
         
     } catch (error) {
-        res.status(400).send({ msg: "Product not existing" })
+        res.status(400).send({ message: error.message })
     }
 };
 
@@ -92,7 +92,7 @@ export const contrGetProducts = async (req, res) => {
         return res.json({ allProducts })
 
     } catch (error) {
-        res.status(400).send({ msg: "Is not possible show the products" })
+        res.status(400).send({ message: error.message })
     }
 };
 
@@ -102,6 +102,7 @@ export const contrPostProd = async (req, res) => {
     try {
 
         const data = req.body
+
         const savedProduct = await productsService.loadProduct(data)
 
         const allProducts = await ProductDbManager.findElements()
@@ -111,7 +112,7 @@ export const contrPostProd = async (req, res) => {
 
     } catch (error) {
 
-        res.status(400).json({ msg: "the product was not saved" });
+        res.status(400).send({ message: error.message })
     }
 };
 
@@ -127,7 +128,7 @@ export const contrPutProd = async (req, res) => {
         res.send({ status: "success", message: "Product updated" });
 
     } catch (error) {
-        res.status(400).send({ msg: "The product was not updated" });
+        res.status(400).send({ message: error.message })
     }
 };
 
@@ -142,6 +143,6 @@ export const contrDelProd = async (req, res) => {
 
     } catch (error) {
 
-        return res.status(400).json({ msg: "The product was not deleted" })
+        res.status(400).send({ message: error.message })
     }
 };
