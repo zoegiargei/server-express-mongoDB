@@ -26,9 +26,9 @@
 
 <section class="navigation">
 
-    <button type="button" class="btn btn-primary" id="prevPage" > {{nextLink}} </button>
-    <div class="pageNumber"></div>
-    <button type="button" class="btn btn-primary" id="nextPage" > {{prevLink}} </button>
+    <button type="button" class="btn btn-primary" id="prevPage" > <a href={{nextLink}}> pagina siguiente </a></button>
+    <div class="pageNumber">{{numberPage}}</div>
+    <button type="button" class="btn btn-primary" id="nextPage" > <a href={{prevLink}}> pagina previa </a></button>
 
 </section>
 
