@@ -11,13 +11,14 @@ export const contrRegister = async (req, res) => {
 
         exist.forEach(elem => {
             if(elem.email === email){
+                res.redirect('/web/session/register/')
                 throw new Error("User already exists")
             }
         })
 
         console.log(req.body)
 
-        const result = await usersServices.saveUser({first_name, last_name, email, age, password})
+        const result = await usersServices.saveUser({ first_name, last_name, email, age, password })
 
         res.send({ status: "success", message: "User registered" })
 
@@ -32,6 +33,7 @@ export const contrLogin = async (req, res) => {
         const { email, password } = req.body
 
         const userInDb = await usersServices.getUserByQuery({$and: [{ email: email }, { password: password }]}) //como no hashee el password aun puedo buscarlo directamente
+        
         console.log('user in db')
         console.log(userInDb)
 
@@ -45,7 +47,12 @@ export const contrLogin = async (req, res) => {
                 email: field.email,
                 age: field.age
             }
+
         })
+
+        req.session.auth = {
+            auth: true
+        }
 
         console.log(req.session.user)
 
@@ -67,13 +74,13 @@ export const contrLogout = async (req, res) => {
 };
 
 
-/* export const contrAuth = async (req, res) => {
+export const contrAuth = async (req, res) => {
     try {
         
         const usernameInDb = await usersServices.getAField({username: req.session.user}, {username: 1})
         console.log(usernameInDb)
         
-        if(usernameInDb && req.session.admin){
+        if(usernameInDb != [] && usernameInDb != {} && req.session.admin){
             return next()
         }
 
@@ -81,7 +88,7 @@ export const contrLogout = async (req, res) => {
         return res.status(401).send('Error of authentication')
     }
 
-}; */
+};
 
 
 export const contrPrivate = async (req, res) => {

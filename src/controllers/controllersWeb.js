@@ -52,7 +52,7 @@ export const publicAccess = (req, res, next) => {
 
 export const privateAccess = (req, res, next) => {
     if(!req.session.user){
-        return res.redirect('/login')
+        return res.redirect('/web/login')
     }
     next()
 };
