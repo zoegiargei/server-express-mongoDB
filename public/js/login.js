@@ -16,7 +16,7 @@ loginForm.addEventListener('submit', e => {
         method: 'POST',
         body: JSON.stringify(userLogin),
         headers: {
-            'content-Type': 'application/json'
+            'Content-Type': 'application/json'
         }
     }).then(result => {
         if(result.status === 200){
