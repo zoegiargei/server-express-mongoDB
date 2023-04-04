@@ -1,7 +1,7 @@
 class Register{
-    constructor(firstName, lastName, email, age, password){
-        this.firstName = firstName,
-        this.lastName = lastName,
+    constructor(first_name, last_name, email, age, password){
+        this.first_name = first_name,
+        this.last_name = last_name,
         this.email = email,
         this.age = age,
         this.password = password
@@ -14,12 +14,24 @@ registerForm.addEventListener('submit', e => {
     e.preventDefault()
 
     const dataForm = new FormData(e.target)
-    let newRegister = new Register(dataForm.get('firstName', dataForm.get('lastName'), dataForm.get('regEmail'),  dataForm.get('age'),  dataForm.get('regPassword')))
+    console.log(dataForm)
+
+    const newRegister = new Register(dataForm.get('firstName'), dataForm.get('lastName'), dataForm.get('regEmail'),  dataForm.get('age'),  dataForm.get('regPassword'))
+    console.log(newRegister)
+
     fetch('/api/session/register/', {
         method: 'POST',
         body: JSON.stringify(newRegister),
         headers: {
             'Content-Type': 'application/json'
         }
-    }).then(result => result.json().then(json => console.log(json)))
+
+    }).then(result => {
+        
+        if(result.status === 200){
+            registerForm.reset()
+            window.location.replace('/web/')
+        }
+        result.json().then(json => console.log(json))
+    })
 })

@@ -27,7 +27,7 @@ routerWeb.get('/login', publicAccess, (req, res) => {
 
 routerWeb.get('/', privateAccess, (req, res) => {
     res.render('profile', {
-        user: JSON.stringify(req.session.user)
+        user: req.session.user
     })
 });
 

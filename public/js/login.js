@@ -18,7 +18,9 @@ loginForm.addEventListener('submit', e => {
         headers: {
             'Content-Type': 'application/json'
         }
+
     }).then(result => {
+        
         if(result.status === 200){
             loginForm.reset()
             window.location.replace('/web/')
