@@ -3,6 +3,15 @@ import UsersServices from "../services/usersServices.js";
 export const usersServices = new UsersServices();
 
 
+export function roleSystem(email, password){
+    if(email === "adminCoder@coder.com" && password === "adminCod3r123"){
+        return "Admin"
+    } else {
+        return "User"
+    }
+}
+
+
 export const contrRegister = async (req, res) => {
     try {
         const { first_name, last_name, email, age, password } = req.body
@@ -32,23 +41,35 @@ export const contrLogin = async (req, res) => {
     try {
         const { email, password } = req.body
 
-        const userInDb = await usersServices.getUserByQuery({$and: [{ email: email }, { password: password }]}) //como no hashee el password aun puedo buscarlo directamente
-        
-        console.log('user in db')
-        console.log(userInDb)
+        const role = roleSystem(email, password)
 
-        userInDb.forEach(field => {
-            if(!(field.email === email && field.password === password)){
-                throw new Error("Incorrect credentials")
-            }
+        if(role === 'User'){            
+            const userInDb = await usersServices.getUserByQuery({$and: [{ email: email }, { password: password }]}) //como no hashee el password aun puedo buscarlo directamente
+
+            userInDb.forEach(field => {
+                if(!(field.email === email && field.password === password)){
+                    throw new Error("Incorrect credentials")
+                }
+    
+                //const role = roleSystem(field.email, field.password)
+    
+                req.session.user = {
+                    name: `${field.first_name} ${field.last_name}`,
+                    email: field.email,
+                    age: field.age,
+                    role: role
+                }
+    
+            })
+            
+        } else{
 
             req.session.user = {
-                name: `${field.first_name} ${field.last_name}`,
-                email: field.email,
-                age: field.age
+                name:  'Admin user',
+                email: 'adminCoder@coder.com',
+                role: role
             }
-
-        })
+        }
 
         req.session.auth = {
             auth: true
@@ -77,7 +98,7 @@ export const contrLogout = async (req, res) => {
 export const contrAuth = async (req, res) => {
     try {
         
-        const usernameInDb = await usersServices.getAField({username: req.session.user}, {username: 1})
+        const usernameInDb = await usersServices.getAField({username: req.session.user.name}, {username: 1})
         console.log(usernameInDb)
         
         if(usernameInDb != [] && usernameInDb != {} && req.session.admin){

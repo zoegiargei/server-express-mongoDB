@@ -5,6 +5,7 @@ class UsersServices{
 
     async saveUser(data){
         console.log(data)
+
         const newUser = new User(data)
         console.log(newUser)
         

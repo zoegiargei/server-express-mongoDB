@@ -1,3 +1,5 @@
+<h1 class="mb-10">Role: {{user.role}}</h1>
+
 <div class="profileContainer">
 
     <section class="mx-auto">
@@ -10,7 +12,9 @@
         <section class="datesContainer mb-3">
             <ul class="datesUl">
                 <li>Email: {{user.email}}</li>
-                <li>Age: {{user.age}}</li>
+                {{#if user.age}}
+                    <li>Age: {{user.age}}</li>
+                {{/if}}
             </ul>
         </section>
 

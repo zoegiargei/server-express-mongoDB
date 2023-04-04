@@ -6,7 +6,7 @@ routerSession.post('/register', contrRegister)
 
 routerSession.post('/login', contrLogin);
 
-routerSession.get('/logout', contrLogout)
+routerSession.get('/logout', contrLogout) //add contrAuth like proof
 
 routerSession.get('/private', contrAuth, contrPrivate);
 

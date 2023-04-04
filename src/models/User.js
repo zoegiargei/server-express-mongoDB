@@ -1,5 +1,5 @@
 class User{
-    constructor({ first_name, last_name, email, age, password }){
+    constructor({ first_name, last_name, email, age, password}){
 
         if(!first_name){ throw new Error('Sent an invalidate first name') }
         if(!last_name){ throw new Error('Sent an invalidate last name') }

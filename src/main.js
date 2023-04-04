@@ -34,6 +34,7 @@ export const cartsManager = new CartsManager("./fileOfCarts.json");
 //
 const app = express();
 
+export const sessions = {};
 
 //
 mongoose.connect(MONGO_CNX_STR, {
@@ -58,7 +59,7 @@ app.use(thAreCookies);
 app.use(session({
     store: new MongoStore({
         mongoUrl: MONGO_CNX_STR,
-        ttl: 15
+        ttl: 300 //temporal time life
     }),
     secret: "secretStringForSecurity",
     resave: false,
