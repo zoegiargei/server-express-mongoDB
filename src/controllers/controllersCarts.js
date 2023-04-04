@@ -5,7 +5,7 @@ import CartsService from '../services/cartsService.js';
 import { productsService } from './controllersProducts.js';
 import Cart from "../models/Cart.js";
 
-const cartsService = new CartsService;
+export const cartsService = new CartsService;
 
 export const contrPostCart = async (req, res) => {
 

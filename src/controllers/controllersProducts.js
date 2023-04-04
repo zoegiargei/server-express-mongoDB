@@ -11,6 +11,7 @@ export const contrGetProd = async (req, res) => {
         const product = await ProductDbManager.findElementById(pid)
     
         res.json({ product })
+        //res.send({ status: "success", message: { product } });
         
     } catch (error) {
         res.status(400).send({ message: error.message })
@@ -64,7 +65,7 @@ export const contrGetProducts = async (req, res) => {
                 const prevLink = productsByPage.hasPrevPage ? `api/products/limit=${limit}&?page=${Number(page)-1}` : null
                 const nextLink = productsByPage.hasPrevPage ? `api/products/limit=${limit}&?page=${Number(page)+1}` : null
 
-                return res.status(200).json({productsByPage, prevLink, nextLink })
+                return res.status(200).json({ productsByPage, prevLink, nextLink })
 
             } catch (error) {
                 res.status(400).send({ msg: "Cannot show products by paginate" })

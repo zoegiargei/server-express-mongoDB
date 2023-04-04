@@ -1,0 +1,27 @@
+<h1>Cart</h1>
+
+{{#if thIsProducts}}
+
+    {{#each products}}
+
+        <div class="p-2 m-4">
+
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-action active" aria-current="true" ><h5>Product: {{ this.title }}</h5></li>
+                <li class="list-group-item list-group-item-action" >Description: {{this.product.description}}</li>
+                <li class="list-group-item list-group-item-action" >Code: {{this.product.code}}</li>
+                <li class="list-group-item list-group-item-action" >Price: {{this.product.price}}</li>
+                <li class="list-group-item list-group-item-action" >Status: {{this.product.status}}</li>
+                <li class="list-group-item list-group-item-action" >Stock: {{this.product.stock}}</li>
+                <li class="list-group-item list-group-item-action" >Category: {{this.product.category}}</li>
+                <li class="list-group-item list-group-item-action" >Thumbnail: {{this.product.thumbnail}}</li>
+
+                <li class="list-group-item list-group-item-action" >Quantity: {{this.quantity}}</li>
+            </ul>
+        </div>
+
+    {{/each}}
+
+{{else}}
+    <h3 class="h1 p-2 d-flex justify-content-center" >There aren't products in the Cart</h3>
+{{/if}}

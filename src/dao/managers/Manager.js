@@ -1,6 +1,5 @@
 import { writeFile, readFile } from 'fs/promises';
 import Product from '../../models/Product.js'
-import fieldsValidation from '../../controllers/validations/fileldsValidation.js';
 
 class Manager{
     constructor(path){
@@ -28,8 +27,6 @@ class Manager{
     async addElement(element){
 
         const newElement = new Product(element)
-
-        fieldsValidation(newElement)
 
         this.elements = await this.read()
 
@@ -59,13 +56,6 @@ class Manager{
             })
         }
     };
-
-    /*     async getElementByIdentifier({field: fieldName, value: valueName}){
-
-        const allElements = JSON.parse(await readFile(this.path, 'utf-8'))
-        return allElements.find(elem => elem[fieldName] === valueName)
-
-    }; */
 
     async getElementByIdentifier(id){
 
