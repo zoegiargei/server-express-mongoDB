@@ -5,17 +5,7 @@ import { isValidPassword } from "../main.js";
 import { AuthentiationFailed } from "../entities/errors/AuthenticationFailed.js";
 
 
-/* export function roleSystem(email, password){ //Esto podria ser un middleware con (req, res, next)
-    if(email === "adminCoder@coder.com" && password === "adminCod3r123"){
-        return "Admin"
-    } else {
-        return "User"
-    }
-} */
-
-
 export const usersServices = new UsersServices();
-
 
 passport.use('register', new Strategy({ passReqToCallback: true , usernameField: 'email'}, async (req, _u, _p, done) => {
 
@@ -43,9 +33,15 @@ passport.use('login', new Strategy({ passReqToCallback: true , usernameField: 'e
 
     const { email, password } = req.body
 
-    const role = req.role
+    let role
+    
+    if(email == "adminCoder@coder.com" && password == "adminCod3r123"){
+        role = "Admin"
+    } else{
+        role = "User"
+    }
 
-    if( String(role) === 'User'){
+    if(role === "User"){
         
         const user = await usersServices.getUserByQuery({ email: email })
 
@@ -62,17 +58,7 @@ passport.use('login', new Strategy({ passReqToCallback: true , usernameField: 'e
             
             const isValidatePassword = isValidPassword(field.password, password)
             
-            if(field.email === email && isValidatePassword){
-
-                req.session.user = {
-                    name: `${field.first_name} ${field.last_name}`,
-                    email: field.email,
-                    age: field.age,
-                    role: role
-                }
-                //mandar user x socket: otra posibilidad, probar!
-
-            } else {
+            if(!isValidatePassword){
                 return done(new AuthentiationFailed())
             }
         })
@@ -81,16 +67,13 @@ passport.use('login', new Strategy({ passReqToCallback: true , usernameField: 'e
         console.log(' REQ.SESSION.USER !!!! ')
         console.log(req.session.user)
 
+        delete user.password
+
         done(null, user)
 
     } else{
 
-        req.session.user = {
-            name:  'Admin user',
-            email: 'adminCoder@coder.com',
-            role: role
-        }
-
+        req.auth = true
         const user =  {
             name:  'Admin user',
             email: 'adminCoder@coder.com',
@@ -98,9 +81,7 @@ passport.use('login', new Strategy({ passReqToCallback: true , usernameField: 'e
         }
 
         done(null, user)
-
     }
-
 
 }));
 

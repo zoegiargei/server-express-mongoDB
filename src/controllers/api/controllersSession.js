@@ -26,13 +26,9 @@ export async function contrLogin (req, res, next){
 
 export async function contrLogout (req, res) {
 
+    //logout por passport
     req.logout(err => {
-        if(err){
-            return res.status(500).send({status: "error", error: "Couldn't logout"})
-        }
-
-        req.auth = false
-        res.redirect('/web/')
+        res.redirect('/web/login')
         res.sendStatus(200)
     })
 };
@@ -41,7 +37,7 @@ export async function contrLogout (req, res) {
 export const contrAuth = async (req, res) => {
     try {
         
-        const usernameInDb = await usersServices.getAField({username: req.session.user.name}, {username: 1})
+        const usernameInDb = await usersServices.getAField({username: req.user.firs_name}, {username: 1})
         
         if(usernameInDb != [] && usernameInDb != {} && req.auth){
             return next()

@@ -30,4 +30,8 @@ routerWeb.get('/', onlyLoggedIn, (req, res) => {
     res.render('profile', { title: 'Profile', user: user})
 });
 
+routerWeb.get('/logout', (req, res) => {
+    res.redirect('/api/auth/logout')
+})
+
 export default routerWeb;
