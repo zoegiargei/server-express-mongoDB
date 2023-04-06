@@ -1,9 +1,9 @@
 //import { cartsManager } from '../main.js';
 //import { productsManager }  from '../main.js';
 
-import CartsService from '../services/cartsService.js';
+import CartsService from '../../services/cartsService.js';
 import { productsService } from './controllersProducts.js';
-import Cart from "../models/Cart.js";
+import Cart from "../../models/Cart.js";
 
 export const cartsService = new CartsService;
 

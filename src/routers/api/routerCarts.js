@@ -1,9 +1,8 @@
 import { Router } from 'express';
-import { contrGetCart, contrProdInCart, contrDelProdInCart, contrPostCart, contrPutProdInCart, contrDelAllProds, contrPutCart } from '../controllers/controllersCarts.js';
+import { contrGetCart, contrProdInCart, contrDelProdInCart, contrPostCart, contrPutProdInCart, contrDelAllProds, contrPutCart } from '../../controllers/api/controllersCarts.js';
 
 const routerCarts = Router();
 
-export default routerCarts;
 
 routerCarts.post('/', contrPostCart)
 
@@ -18,3 +17,5 @@ routerCarts.put('/:cid', contrPutCart)
 routerCarts.delete('/:cid/products/:pid', contrDelProdInCart)
 
 routerCarts.delete('/:cid', contrDelAllProds)
+
+export default routerCarts;

@@ -1,5 +1,7 @@
 import { Router } from 'express';
-import { contrShowAllproducts, contrShowProdByPaginate, contrShowCart, publicAccess, privateAccess } from '../controllers/controllersWeb.js';
+import { contrShowAllproducts, contrShowProdByPaginate, contrShowCart, publicAccess } from '../../controllers/web/controllersWeb.js';
+import { onlyLoggedIn } from '../../middlewares/onlyLoggedIn.js';
+
 
 const routerWeb = Router();
 
@@ -17,18 +19,15 @@ routerWeb.get('/chat', (req, res) => { res.redirect('/chat') })
 
 routerWeb.get('/cart/:cid', contrShowCart)
 
-routerWeb.get('/register', publicAccess, (req, res) => {
-    res.render('register')
-});
+routerWeb.get('/register', publicAccess, (req, res) => { res.render('register') });
 
-routerWeb.get('/login', publicAccess, (req, res) => {
-    res.render('login')
-});
+routerWeb.get('/login', publicAccess, (req, res) => { res.render('login') });
 
-routerWeb.get('/', privateAccess, (req, res) => {
-    res.render('profile', {
-        user: req.session.user
-    })
+routerWeb.get('/', onlyLoggedIn, (req, res) => {
+
+    //const user = req.session.user
+    const user = req.user
+    res.render('profile', { title: 'Profile', user: user})
 });
 
 export default routerWeb;

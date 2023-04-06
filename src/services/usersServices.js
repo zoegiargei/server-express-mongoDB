@@ -1,15 +1,13 @@
-import User from "../models/User.js";
+import User from "../entities/User.js";
 import { userDbManager } from "../dao/managersDB/UserDbManager.js";
 
 class UsersServices{
 
     async saveUser(data){
-        console.log(data)
 
         const newUser = new User(data)
-        console.log(newUser)
-        
-        return await userDbManager.saveElement(newUser)
+        await userDbManager.saveElement(newUser)
+        return newUser
     }
 
     async getUserByQuery(query){

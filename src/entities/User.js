@@ -1,5 +1,7 @@
+import { createHash } from "../main.js"
+
 class User{
-    constructor({ first_name, last_name, email, age, password}){
+    constructor({ first_name, last_name, email, age, password, role='User'}){
 
         if(!first_name){ throw new Error('Sent an invalidate first name') }
         if(!last_name){ throw new Error('Sent an invalidate last name') }
@@ -11,7 +13,8 @@ class User{
         this.last_name = last_name,
         this.email = email,
         this.age = age,
-        this.password = password
+        this.password = createHash(password)
+        this.role = role
     }
 }
 

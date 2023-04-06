@@ -19,7 +19,7 @@ registerForm.addEventListener('submit', e => {
     const newRegister = new Register(dataForm.get('firstName'), dataForm.get('lastName'), dataForm.get('regEmail'),  dataForm.get('age'),  dataForm.get('regPassword'))
     console.log(newRegister)
 
-    fetch('/api/session/register/', {
+    fetch('/api/auth/register', {
         method: 'POST',
         body: JSON.stringify(newRegister),
         headers: {
@@ -27,11 +27,17 @@ registerForm.addEventListener('submit', e => {
         }
 
     }).then(result => {
-        
-        if(result.status === 200){
+
+        if(result.status === 201){
             registerForm.reset()
             window.location.replace('/web/')
         }
-        result.json().then(json => console.log(json))
+        
+        result.json()
+    
+    }).then(json => {
+
+        console.log(json)
     })
+
 })

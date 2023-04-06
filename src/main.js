@@ -11,22 +11,28 @@ import CartsManager from './dao/managers/CartsManager.js';
 
 import { engine } from 'express-handlebars';
 import { Server } from 'socket.io';
-import timeNow from './controllers/middlewares/timeNow.js';
-import addToReq from './controllers/middlewares/addToReq.js'
-import mistake from './controllers/errors/mistake.js';
-
-import routerApi from './routers/routerApi.js';
-import routerWeb from './routers/routerWeb.js';
-
 import { configMessagesSocket } from './sockets/messageSocket.js';
 
-import cookieParser from 'cookie-parser';
-import thAreCookies from './controllers/middlewares/thAreCookies.js';
-import session from 'express-session';
+import mistake from './controllers/errors/mistake.js';
 
-import showSession from './controllers/middlewares/showSession.js';
+import routerApi from './routers/api/routerApi.js';
+import routerWeb from './routers/web/routerWeb.js';
+
+import timeNow from './middlewares/timeNow.js';
+import addIoToReq from './middlewares/addIoToReq.js';
+import thAreCookies from './middlewares/thAreCookies.js';
+import showSession from './middlewares/showSession.js'
+
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
+import bcrypt from 'bcrypt';
+
+import { passportInitialize, passportSession } from './middlewares/passport.js';
 
 //
+export const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+export const isValidPassword = (userPassword, password) => bcrypt.compareSync(password, userPassword);
+
 export const productsManager = new Manager("./fileOfProducts.json");
 export const cartsManager = new CartsManager("./fileOfCarts.json");
 
@@ -34,27 +40,12 @@ export const cartsManager = new CartsManager("./fileOfCarts.json");
 //
 const app = express();
 
-export const sessions = {};
 
 //
 mongoose.connect(MONGO_CNX_STR, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
-
-
-//
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-//app.use(express.static(__dirname + '/public'));
-app.use(express.static('public'))
-
-app.use(timeNow);
-app.use(addToReq);
-app.use(mistake);
-
-app.use(cookieParser('secretWord'));
-app.use(thAreCookies);
 
 app.use(session({
     store: new MongoStore({
@@ -65,6 +56,21 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }));
+
+//
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+//app.use(express.static(__dirname + '/public'));
+app.use(express.static('public'))
+
+app.use(timeNow);
+app.use(addIoToReq);
+app.use(mistake);
+
+app.use(cookieParser('secretWord'));
+app.use(thAreCookies);
+
+app.use(passportInitialize, passportSession)
 
 app.use((req, res, next) => {
     showSession(req)
@@ -84,7 +90,7 @@ app.use('/web', routerWeb);
 app.use('/api', routerApi);
 
 
-//
+//proof of cookies & session
 app.get('/setCookie', (req, res) => {
     res.cookie('cookieDePrueba', 'Esto es lo que contendra la cookie', { maxAgge: 10000, signed:true }).send('Cookie')
 });
@@ -109,6 +115,8 @@ app.get('/session', (req, res) => {
         res.send('Bienvenido nuevo Usuario!')
     }
 });
+
+
 
 
 //const port = (process.env.PORT || 8080);

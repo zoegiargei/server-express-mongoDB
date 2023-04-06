@@ -1,6 +1,6 @@
-import { productsService } from "./controllersProducts.js";
-import { cartsService } from "./controllersCarts.js";
-import { PORT } from "../config/server.js";
+import { productsService } from "../api/controllersProducts.js";
+import { cartsService } from "../api/controllersCarts.js";
+import { PORT } from "../../config/server.js";
 
 
 export const contrShowAllproducts = async (req, res) => {
@@ -43,16 +43,24 @@ export const contrShowCart = async (req, res) => {
 
 
 export const publicAccess = (req, res, next) => {
-    if(req.session.user){
-        return res.redirect('/')
+    if(req.user){ //cambie req.session.user por req.user
+        return res.redirect('/web/')
     }
     next()
 };
 
 
 export const privateAccess = (req, res, next) => {
-    if(!req.session.user){
+    if(!req.user){ //cambie req.session.user por req.user
         return res.redirect('/web/login')
+    }
+    next()
+};
+
+
+export const loggedIn = (req, res, next) => {
+    if(req.user){ //cambie req.session.user por req.user
+        return res.redirect('/web/')
     }
     next()
 };

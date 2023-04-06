@@ -1,5 +1,5 @@
-import { ProductDbManager } from "../dao/managersDB/ProductDbManager.js";
-import ProductsService from "../services/productsService.js";
+import { ProductDbManager } from "../../dao/managersDB/ProductDbManager.js";
+import ProductsService from "../../services/productsService.js";
 
 export const productsService = new ProductsService();
 
