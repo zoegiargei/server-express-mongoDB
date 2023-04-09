@@ -1,11 +1,11 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from 'passport-local'
-//import { Strategy as GithubStrategy } from 'passport-github2'
-//import { githubCallbackUrl, githubClientSecret, githubClienteId } from '../config/auth.config.js'
+import { Strategy as GithubStrategy } from 'passport-github2'
+import { githubCallbackUrl, githubClientSecret, githubClienteId } from '../config/auth.config.js';
 import UsersServices from "../services/usersServices.js";
 import { isValidPassword } from "../main.js";
 import { AuthentiationFailed } from "../entities/errors/AuthenticationFailed.js";
-//import User from "../entities/User.js";
+import User from "../entities/User.js";
 
 
 export const usersServices = new UsersServices();
@@ -45,29 +45,34 @@ passport.use('login', new LocalStrategy({ usernameField: 'email' }, async ( user
 }));
 
 
-/* passport.use('github', new GithubStrategy({
+passport.use('github', new GithubStrategy({
+    
     clientID: githubClienteId,
     clientSecret: githubClientSecret,
     callbackURL: githubCallbackUrl
+
 }, async (accessToken, refreshToken, profile, done) => {
     console.log(profile)
 
-    let user
-    try {
-        
-        user = await usersServices.getUserByQuery({ email: profile.username })
+    //let user
+    const exist = await usersServices.getUserByQuery({ username: profile.username })
 
-    } catch (error) {
-
-        user = new User({
-            email: profile.username,
-        })
-
-        await usersManager.guardar(user)
+    if(exist.length > 0){
+        const user = exist[0]
+        return done(null, user)
     }
 
-    done(null, user)
-})); */
+    const user = await usersServices.saveUser({
+        username: profile.username,
+        first_name: profile.id,
+        last_name: profile.displayName,
+        email: '@x.com',
+        password:  ''
+    })
+
+    return done(null, user)
+
+}));
 
 
 //Configuraciones que "copiamos y pegamos", que tenemos que agregar para que funcione passport
@@ -78,6 +83,6 @@ export const passportInitialize = passport.initialize();
 export const passportSession = passport.session();
 
 // estos son para cargar como middlewares antes de los controladores correspondientes
-//export const autenticacionUserPass = passport.authenticate('local', { failWithError: true })
-//export const autenticacionPorGithub = passport.authenticate('github', { scope: ['user:email'] })
-//export const antenticacionPorGithub_CB = passport.authenticate('github', { failWithError: true })
+export const authenticationUserPass = passport.authenticate('local', { failWithError: true })
+export const authenticationByGithub = passport.authenticate('github', { scope: ['user:email'] })
+export const authenticationByGithub_CB = passport.authenticate('github', { failWithError: true })

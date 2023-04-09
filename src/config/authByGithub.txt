@@ -1,0 +1,6 @@
+
+App ID: 315630
+Client ID: Iv1.9147557ebfd099ef
+
+Private key
+SHA256:rwMPVW1xeJlxWJLfbcj9LxccWHz2UFCrHd23h+ZTjsQ=
