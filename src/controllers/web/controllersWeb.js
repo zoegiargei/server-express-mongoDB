@@ -1,7 +1,6 @@
 import { productsService } from "../api/controllersProducts.js";
 import { cartsService } from "../api/controllersCarts.js";
 import { PORT } from "../../config/server.js";
-import { PermissionsFailed } from "../../entities/errors/PermissionsFailed.js";
 
 
 export const contrShowAllproducts = async (req, res) => {
@@ -52,16 +51,8 @@ export const publicAccess = (req, res, next) => {
 
 
 export const privateAccess = (req, res, next) => {
-    if(!req.session.user){
+    if(!req.user){
         return res.redirect('/web/login')
-    }
-    next()
-};
-
-
-export const loggedIn = (req, res, next) => {
-    if(!req.session.user){ //cambie req.session.user por req.user
-        return (new PermissionsFailed())
     }
     next()
 };

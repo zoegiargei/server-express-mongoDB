@@ -36,7 +36,6 @@ registerForm.addEventListener('submit', e => {
         result.json()
     
     }).then(json => {
-
         console.log(json)
     })
 

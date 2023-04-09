@@ -1,34 +1,44 @@
+import { usersServices } from "../../middlewares/passport.js"
+
 
 export async function contrRegister (req, res, next){
     try {
-        res.status(201).json(req.user)
+        
+        const { first_name, last_name, email, age, password } = req.body
+
+        const exist = await usersServices.getUserByQuery({ email: email })
+
+        if(exist.length > 0){
+            next( new Error("User already exists") )
+        };
+    
+        const user = await usersServices.saveUser({ first_name, last_name, email, age, password })
+
+        // funcion de passport para que el registro ya me deje logueado tambien!
+        req.login(user, error => {
+            if (error) {
+                next( new Error("Login failed") )
+            } else {
+                res.status(201).json(req.user)
+            }
+        })
+
     } catch (error) {
-        return res.status(500).send({ status: "error", error: error.message })
+        return res.status(401).send({ message: error.message })
     }
 };
 
 
 export async function contrLogin (req, res, next){
-
-    try {
-        if(!req.user){
-            throw new Error("Couldn't login")
-        }
-
-        res.sendStatus(201)
-        res.send({status:"success", payload: req.user})
-
-    } catch (error) {
-        return res.status(500).send({status: "error", error: error.message})
-    }
+    res.sendStatus(201)
 };
 
 
 export async function contrLogout (req, res) {
 
     //logout por passport
+    //req.logout internamente hace el destroy de la req.session
     req.logout(err => {
-        res.redirect('/web/login')
         res.sendStatus(200)
     })
 };
@@ -46,7 +56,6 @@ export const contrAuth = async (req, res) => {
     } catch (error) {
         return res.status(401).send('Error of authentication')
     }
-
 };
 
 
