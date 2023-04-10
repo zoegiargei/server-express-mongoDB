@@ -5,7 +5,7 @@ import { githubCallbackUrl, githubClientSecret, githubClienteId } from '../confi
 import UsersServices from "../services/usersServices.js";
 import { isValidPassword } from "../main.js";
 import { AuthentiationFailed } from "../entities/errors/AuthenticationFailed.js";
-import User from "../entities/User.js";
+import GithubUser from "../entities/GithubUser.js";
 
 
 export const usersServices = new UsersServices();
@@ -58,19 +58,19 @@ passport.use('github', new GithubStrategy({
     const exist = await usersServices.getUserByQuery({ username: profile.username })
 
     if(exist.length > 0){
+
         const user = exist[0]
+        
         return done(null, user)
     }
 
-    const user = await usersServices.saveUser({
-        username: profile.username,
-        first_name: profile.id,
-        last_name: profile.displayName,
-        email: '@x.com',
-        password:  ''
+    const githubUser = new GithubUser({
+        full_name: profile.displayName,
+        user_id: profile.id,
+        username: profile.username
     })
 
-    return done(null, user)
+    return done(null, githubUser)
 
 }));
 
