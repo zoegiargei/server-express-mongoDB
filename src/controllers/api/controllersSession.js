@@ -1,5 +1,7 @@
-import { usersServices } from "../../middlewares/passport.js"
-
+//import passport from "passport"
+import usersServices from "../../services/usersServices.js"
+//import { AuthentiationFailed } from "../../entities/errors/AuthenticationFailed.js"
+import { encrypt } from "../../utils/jwtUtils.js";
 
 export async function contrRegister (req, res, next){
     try {
@@ -23,6 +25,11 @@ export async function contrRegister (req, res, next){
             }
         })
 
+        res.cookie('jwt_authorization', encriptarJWT(user), {
+            signed: true,
+            httpOnly: true
+        })
+
     } catch (error) {
         return res.status(401).send({ message: error.message })
     }
@@ -30,11 +37,22 @@ export async function contrRegister (req, res, next){
 
 
 export async function contrLogin (req, res, next){
+
+    res.cookie('jwt_authorization', encrypt(req.user), {
+        signed: true,
+        httpOnly: true
+    })
+
     res.sendStatus(201)
 };
 
 
 export async function contrLogout (req, res) {
+
+    res.clearCookie('jwt_authorization', {
+        signed: true,
+        httpOnly: true
+    })
 
     //logout por passport
     //req.logout internamente hace el destroy de la req.session
@@ -62,4 +80,9 @@ export const contrAuth = async (req, res) => {
 export const contrPrivate = async (req, res) => {
     console.log(req.user)
     res.send('Si ves esto es por que estas logeado.')
+};
+
+
+export const controGetCurrent = async (req, res) => {
+    res.json(req.user)
 };

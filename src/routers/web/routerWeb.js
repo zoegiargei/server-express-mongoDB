@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { contrShowAllproducts, contrShowProdByPaginate, contrShowCart, publicAccess } from '../../controllers/web/controllersWeb.js';
+import authByRole from '../../middlewares/authByRole.js';
 import { onlyLoggedIn } from '../../middlewares/onlyLoggedIn.js';
 
 
@@ -11,9 +12,11 @@ routerWeb.get('/products', contrShowProdByPaginate)
 
 routerWeb.get('/cart/:cid', contrShowCart)
 
+//routerWeb.get('/cartId/:cid', { title: 'Cart by ID' })
+
 routerWeb.get('/realtimeproducts', async (req, res) => { res.render('realTimeProducts', { title: 'Real Time Products' }) })
 
-routerWeb.get('/addProducts', async (req, res) => { res.render('addProducts', { title: 'Add products to Database' }) })
+routerWeb.get('/addProducts', authByRole(['Admin']), async (req, res) => { res.render('addProducts', { title: 'Add products to Database' }) })
 
 routerWeb.get('/chat', async (req, res) => {res.render('chat', { title: 'Chat Websocket' })})
 

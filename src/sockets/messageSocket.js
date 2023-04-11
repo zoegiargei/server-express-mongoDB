@@ -1,8 +1,6 @@
 //import { MessageDbManager } from "../dao/managersDB/MessageDbManager.js";
 //import Message from "../models/Message.js";
-import MessageServices from "../services/messagesService.js";
-
-const messageServices = new MessageServices;
+import messageServices from "../services/messagesService.js";
 
 export function configMessagesSocket(io, socket){
     socket.on('newUser', name => {

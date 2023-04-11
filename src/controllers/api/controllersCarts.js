@@ -1,11 +1,9 @@
 //import { cartsManager } from '../main.js';
 //import { productsManager }  from '../main.js';
 
-import CartsService from '../../services/cartsService.js';
-import { productsService } from './controllersProducts.js';
+import cartsService from '../../services/cartsService.js';
+import productsService from '../../services/productsService.js';
 import Cart from "../../models/Cart.js";
-
-export const cartsService = new CartsService;
 
 export const contrPostCart = async (req, res) => {
 

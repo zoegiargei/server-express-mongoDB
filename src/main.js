@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import { MONGO_CNX_STR, PORT } from './config/server.js';
 import MongoStore from 'connect-mongo';
 
-import __dirname from '../utils/utils.js';
+import __dirname from './utils/utils.js';
 
 import CartsManager from './dao/managers/CartsManager.js';
 
@@ -38,7 +38,7 @@ export const cartsManager = new CartsManager("./fileOfCarts.json");
 
 
 //
-const app = express();
+export const app = express();
 
 
 //
@@ -56,6 +56,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }));
+
 
 //
 app.use(express.json());
@@ -90,33 +91,10 @@ app.use('/web', routerWeb);
 app.use('/api', routerApi);
 
 
-//proof of cookies & session
-app.get('/setCookie', (req, res) => {
-    res.cookie('cookieDePrueba', 'Esto es lo que contendra la cookie', { maxAgge: 10000, signed:true }).send('Cookie')
-});
-
-app.get('/getCookie', (req, res) => {
-    console.dir(req.signedCookies)
-    res.send(req.signedCookies)
-});
-
-app.get('/delCookie', (req, res) => {
-    res.clearCookie('cookieDePrueba').send('Cookie Removed')
-});
-
-
 //
-app.get('/session', (req, res) => {
-    if(req.session.counter) {
-        req.session.counter ++
-        res.send(`Se ha visitado el sitio ${req.session.counter} veces`)
-    } else {
-        req.session.counter = 1
-        res.send('Bienvenido nuevo Usuario!')
-    }
+app.get('*', (req, res, next) => {
+	res.send(`unknown route ${ req.url }`)
 });
-
-
 
 
 //const port = (process.env.PORT || 8080);

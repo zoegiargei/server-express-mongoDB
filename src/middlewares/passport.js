@@ -1,22 +1,19 @@
-import passport from "passport";
+import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local'
 import { Strategy as GithubStrategy } from 'passport-github2'
-import { githubCallbackUrl, githubClientSecret, githubClienteId } from '../config/auth.config.js';
-import UsersServices from "../services/usersServices.js";
-import { isValidPassword } from "../main.js";
-import { AuthentiationFailed } from "../entities/errors/AuthenticationFailed.js";
-import GithubUser from "../entities/GithubUser.js";
-
-
-export const usersServices = new UsersServices();
+import { githubCallbackUrl, githubClientSecret, githubClienteId, JWT_PRIVATE_KEY } from '../config/auth.config.js';
+import usersServices from '../services/usersServices.js';
+import { isValidPassword } from '../main.js';
+import { AuthentiationFailed } from '../entities/errors/AuthenticationFailed.js';
+import GithubUser from '../entities/GithubUser.js';
+import { ExtractJwt, Strategy as jwtStrategy } from 'passport-jwt';
 
 passport.use('login', new LocalStrategy({ usernameField: 'email' }, async ( username, password, done ) => {
-
 
     if(username === "adminCoder@coder.com" && password === "adminCod3r123"){
         console.log('Es usuario admin')
         const userAdmin = {
-            name: 'User Admin',
+            username: 'User Admin',
             email: 'adminCoder@coder.com',
             role: 'Admin'
         }
@@ -71,6 +68,29 @@ passport.use('github', new GithubStrategy({
     })
 
     return done(null, githubUser)
+
+}));
+
+const cookieExtractor = (req) => {
+    let token = null
+    if(req && req.signedCookies){
+        token = req.signedCookies['jwt_authorization']
+    }
+    return token
+};
+
+passport.use('jwt', new jwtStrategy({
+
+    jwtFromRequest: ExtractJwt.fromExtractors([ cookieExtractor ]),
+    secretOrKey: JWT_PRIVATE_KEY
+
+}, async(jwt_payload, done) => {
+
+    try {
+        done(null, jwt_payload)
+    } catch (error) {
+        done(error)
+    }
 
 }));
 

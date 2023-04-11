@@ -8,15 +8,26 @@
 
             <section class="mx-auto">
                 
-                <h1 class="mb-3">Bienvenido {{user.first_name}}! </h1>
+                {{#if user.first_name}}
+                    <h1 class="mb-3">Bienvenido {{user.first_name}}! </h1>
+                {{else}}
+                    <h1 class="mb-3">Bienvenido {{user.full_name}}! </h1>
+                {{/if}}
 
                 <section class="profile mb-3">
                     <i class="bi bi-person-circle userIcon" ></i>
                 </section>
 
-                <section class="datesContainer mb-3">
+                <section class="mb-3 datesContainer">
                     <ul class="datesUl">
-                        <li>Email: {{user.username}}</li>
+
+                        {{#if user.email}}
+                            <li>Email: {{user.email}}</li>   
+                            <li>Username: {{user.username}}</li> 
+                        {{else}}
+                            <li>Username: {{user.username}}</li>   
+                        {{/if}}
+
                         {{#if user.age}}
                             <li>Age: {{user.age}}</li>
                         {{/if}}

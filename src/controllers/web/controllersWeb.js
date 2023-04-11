@@ -1,5 +1,5 @@
-import { productsService } from "../api/controllersProducts.js";
-import { cartsService } from "../api/controllersCarts.js";
+import productsService from "../../services/productsService.js";
+import cartsService  from "../../services/cartsService.js";
 import { PORT } from "../../config/server.js";
 
 

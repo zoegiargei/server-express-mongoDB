@@ -1,7 +1,5 @@
 import { ProductDbManager } from "../../dao/managersDB/ProductDbManager.js";
-import ProductsService from "../../services/productsService.js";
-
-export const productsService = new ProductsService();
+import productsService from "../../services/productsService.js";
 
 export const contrGetProd = async (req, res) => {
 
